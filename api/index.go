@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/http/httputil"
 )
 
 type WordStructure struct {
@@ -16,6 +17,8 @@ type WordStructure struct {
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
+	dump, _ := httputil.DumpRequest(r, true)
+	fmt.Println(string(dump))
 	file, header, err := r.FormFile("doc")
 
 	var title bytes.Buffer
@@ -36,6 +39,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	for _, f := range reader.File {
 		if f.Name == "word/document.xml" {
 			file, err := f.Open()
+
 			var stuff Document
 			err = xml.NewDecoder(file).Decode(&stuff)
 
