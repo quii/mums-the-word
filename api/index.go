@@ -36,6 +36,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	for _, f := range reader.File {
 		if f.Name == "word/document.xml" {
 			file, err := f.Open()
